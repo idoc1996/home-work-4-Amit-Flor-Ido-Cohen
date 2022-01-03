@@ -3,6 +3,7 @@ import java.util.Scanner;
 public class RealEstate {
     public static final int ADDRESS_OF_REAL_ESTATE = 10;
     public static final int CHARS_IN_PHONE = 10;
+    public static final int IGNORE_CHOICE = -999;
 
 
     private User[] users;
@@ -112,7 +113,6 @@ public class RealEstate {
             for (int i = 0; i < properties.length; i++) {
                 if ((properties[i].getUser().getUserName()).equals(user.getUserName())) {
                     System.out.println("");
-
                     System.out.println(j + 1 + ": ");
                     System.out.println(properties[i]);
                     propertiesOfUser[j] = i;
@@ -161,7 +161,7 @@ public class RealEstate {
     private boolean isStreetInList(String chosenCity, String chosenStreet) {
         boolean inList = false;
         for (int i = 0; i < addresses.length; i++) {
-            if (chosenStreet.equals(addresses[i].getStreet())) {
+            if (addresses[i].getTown().equals(chosenCity) && chosenStreet.equals(addresses[i].getStreet())) {
                 inList = true;
                 break;
             }
@@ -182,13 +182,14 @@ public class RealEstate {
         for (int i = 0; i < addresses.length; i++) {
             if (chosenCity.equals(addresses[i].getTown())) {
                 inList = true;
+                break;
             }
         }
         return inList;
     }
 
     private void printAllCities() {
-        boolean print = true;
+        boolean print;
         for (int i = 0; i < addresses.length; i++) {
             print = true;
             for (int j = 0; j < i; j++) {
@@ -352,9 +353,9 @@ public class RealEstate {
         System.out.println("If you want to ignore this section click -999 ");
     }
 
-    private boolean areWantToIgnore(int numToCheck) {
+    private boolean doWeWantToIgnore(int numToCheck) {
         boolean result = false;
-        if (numToCheck == -999) {
+        if (numToCheck == IGNORE_CHOICE) {
             result = true;
         }
         return result;
@@ -380,11 +381,11 @@ public class RealEstate {
         Property[] tempSortPropertiesArray = new Property[properties.length];
         int j = 0;
         for (int i = 0; i < properties.length; i++) {
-            if ((properties[i].isRent() == rent || areWantToIgnore(-999))
-                    && (properties[i].getWhatKind() == kindOfProperty || kindOfProperty == -999)
-                    && (properties[i].getRooms() == rooms || rooms == -999)
-                    && (properties[i].getPrice() >= minPrice || minPrice == -999)
-                    && (properties[i].getPrice() <= maxPrice || maxPrice == -999)) {
+            if (((properties[i].isRent() == rent) || doWeWantToIgnore(IGNORE_CHOICE))
+                    && (properties[i].getWhatKind() == kindOfProperty || kindOfProperty == IGNORE_CHOICE)
+                    && (properties[i].getRooms() == rooms || rooms == IGNORE_CHOICE)
+                    && (properties[i].getPrice() >= minPrice || minPrice == IGNORE_CHOICE)
+                    && (properties[i].getPrice() <= maxPrice || maxPrice == IGNORE_CHOICE)) {
                 tempSortPropertiesArray[j] = properties[i];
                 j++;
             }
