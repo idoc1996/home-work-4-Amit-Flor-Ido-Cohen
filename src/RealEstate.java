@@ -67,7 +67,7 @@ public class RealEstate {
                     Address address = new Address(chosenCity, chosenCity);
                     int kindOfProperty = getKindOfProperty();
                     int floor = 0;
-                    if (kindOfProperty == 1) {
+                    if (kindOfProperty == 1|| kindOfProperty == 2) {
                         System.out.println("On what floor is the property");
                         floor = scanner.nextInt();
                     }
@@ -353,19 +353,13 @@ public class RealEstate {
         System.out.println("If you want to ignore this section click -999 ");
     }
 
-    private boolean doWeWantToIgnore(int numToCheck) {
-        boolean result = false;
-        if (numToCheck == IGNORE_CHOICE) {
-            result = true;
-        }
-        return result;
-    }
 
     public Property[] search() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("To rent or sale? for rent enter 1,for sale enter any key ");
         printIgnoreCode();
-        boolean rent = isForRent(scanner.nextInt());
+        int userChoice = scanner.nextInt();
+        boolean rent = isForRent(userChoice);
         System.out.println("What kind of property" + "\n" + "or property in High-rise building enter 1" + "\n" + "for penthouse enter 2 " + "\n" + "for private house enter 3");
         printIgnoreCode();
         int kindOfProperty = scanner.nextInt();
@@ -381,7 +375,7 @@ public class RealEstate {
         Property[] tempSortPropertiesArray = new Property[properties.length];
         int j = 0;
         for (int i = 0; i < properties.length; i++) {
-            if (((properties[i].isRent() == rent) || doWeWantToIgnore(IGNORE_CHOICE))
+            if (((properties[i].isRent() == rent) || userChoice ==IGNORE_CHOICE )
                     && (properties[i].getWhatKind() == kindOfProperty || kindOfProperty == IGNORE_CHOICE)
                     && (properties[i].getRooms() == rooms || rooms == IGNORE_CHOICE)
                     && (properties[i].getPrice() >= minPrice || minPrice == IGNORE_CHOICE)
